@@ -53,14 +53,14 @@ def step(env, action, state, goal):
     }
     cost = 0
 
-    if not np.all(state[0] == goal):
-        # if (action == 0 or action == 3 or action == 4) and (env.unwrapped.front_pos[0] not in list(range(8) )or env.unwrapped.front_pos[1] not in list(range(8))):
-        if (env.unwrapped.front_pos[0] not in list(range(8) )or env.unwrapped.front_pos[1] not in list(range(8))):
+    if np.all(state[0] == goal):
+        return 0
+    elif (env.unwrapped.front_pos[0] not in list(range(8) )or env.unwrapped.front_pos[1] not in list(range(8))):
             return np.inf
+    else:
         env.step(actions[action])
         cost = 1
- 
-    
+
     return cost
 
 
@@ -178,10 +178,13 @@ def draw_gif_from_seq(seq, env,  path="./gif/doorkey.gif"):
     with imageio.get_writer(path, mode="I", duration=0.8) as writer:
         img = env.render()
         writer.append_data(img)
+        # step_gif(env, act)
         for act in seq:
             img = env.render()
-            step_gif(env, act)
             writer.append_data(img)
+            step_gif(env, act)
+        img = env.render()
+        writer.append_data(img)
     print(f"GIF is written to {path}")
     return
     

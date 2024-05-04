@@ -178,11 +178,13 @@ def draw_gif_from_seq(seq, env,  path="./gif/doorkey.gif"):
     with imageio.get_writer(path, mode="I", duration=0.8) as writer:
         img = env.render()
         writer.append_data(img)
+        plot_env(env)
         # step_gif(env, act)
         for act in seq:
             img = env.render()
             writer.append_data(img)
             step_gif(env, act)
+            plot_env(env)
         img = env.render()
         writer.append_data(img)
     print(f"GIF is written to {path}")
